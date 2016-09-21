@@ -8,11 +8,12 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.ArrayList;
 
 import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
+import tw.com.geminihsu.hotelinfo.common.Constants;
 //import tw.com.geminihsu.hotelinfo.dataManager.HotelDataManger.HotelDataCallBackFunction;
 
 /**
@@ -74,12 +75,12 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                     }
                     //JSONObject total = jsonObj.getJSONObject("totalHotelCount");
                     String totalNum = jsonObj.getString("totalHotelCount");
-                    Log.e(TAG,"total:"+totalNum);
+
                     // Getting JSON Array node
                     JSONArray datalist = jsonObj.getJSONArray("hotelList");
 
                     // looping through All Contacts
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < datalist.length(); i++) {
                         JSONObject c = datalist.getJSONObject(i);
 
                         String sortIndex = c.getString("sortIndex");
@@ -106,7 +107,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         myHotelInfoBean.setHotelId(hotelId);
                         myHotelInfoBean.setSortIndex(sortIndex);
                         myHotelInfoBean.setHotelName(name);
-                        myHotelInfoBean.setHotelAddress(address);
+                        myHotelInfoBean.setHotelAddress(address+","+city+","+stateProvinceCode+" "+postalCode);
                         //myHotelInfoBean.setHotelId(hotelId);
 
 
@@ -145,7 +146,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
 
         @Override
         protected void onPostExecute(List<MyHotelInfoBean> result) {
-           // super.onPostExecute(result);
+            // super.onPostExecute(result);
             // Dismiss the progress dialog
             if (progressDialog_waitforJsonParser.isShowing())
                 progressDialog_waitforJsonParser.dismiss();
@@ -153,19 +154,5 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
             super.onPostExecute(hotelDataList);
 
         }
-
-//    //callback fucntion
-//    private HotelDataCallBackFunction mHotelDataCallBackFunction;
-//
-//    public void setHotelDataCallBackFunction(HotelDataCallBackFunction hotelDataCallBackFunction)
-//    {
-//        mHotelDataCallBackFunction = hotelDataCallBackFunction;
-//    }
-//
-//    public interface HotelDataCallBackFunction{
-//        public void getHotelDataList(List<MyHotelInfoBean> dataList);
-
-
-//    }
 
 }

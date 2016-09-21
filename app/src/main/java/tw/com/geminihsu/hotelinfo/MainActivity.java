@@ -8,8 +8,7 @@ import tw.com.geminihsu.hotelinfo.adapter.ListItemAdapter;
 import tw.com.geminihsu.hotelinfo.adapter.ListItem;
 import tw.com.geminihsu.hotelinfo.asyncTask.HotelDataProcessor;
 import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
-import tw.com.geminihsu.hotelinfo.tw.com.geminihsu.hotelinfo.common.Constants;
-import tw.com.geminihsu.hotelinfo.dataManager.HotelDataManger;
+import tw.com.geminihsu.hotelinfo.common.Constants;
 import tw.com.geminihsu.hotelinfo.asyncTask.HotelDataProcessor.HotelDataCallBackFunction;
 
 
@@ -70,18 +69,6 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    /* parse data from Json */
-    private void getDataFromJson() {
-        for (int i = 0; i < 10; i++) {
-            // for listview data
-            Bitmap bm1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_camera_72x72);
-            ListItem item = new ListItem();
-            item.image = bm1;
-            item.name="Hotel "+String.valueOf(i);
-            item.address="CA 1233 "+String.valueOf(i);
-            mHotelListData.add(item);
-        }
-    }
 
     private void getDataFromJsonData(ArrayList<MyHotelInfoBean> datalist) {
         for (int i = 0; i < datalist.size(); i++) {
