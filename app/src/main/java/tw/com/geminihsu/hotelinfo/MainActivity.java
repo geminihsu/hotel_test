@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.widget.ListView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -53,6 +54,11 @@ public class MainActivity extends Activity {
                     getDataFromJsonData((ArrayList)dataList);
                     listViewAdapter.notifyDataSetChanged();
                 }
+
+                @Override
+                public void catchError(String message) {
+                    showError(message);
+                }
             });
             hotelDataProcessor.execute(Constants.data_url);
         }
@@ -81,5 +87,18 @@ public class MainActivity extends Activity {
             item.address=data.getHotelAddress();
             mHotelListData.add(item);
         }
+    }
+
+    public void showError(String _message)
+    {
+        final String message = _message;
+        runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                        MainActivity.this.finish();
+                    }
+                });
+
     }
 }

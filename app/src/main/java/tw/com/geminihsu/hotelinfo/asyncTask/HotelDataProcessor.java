@@ -36,7 +36,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
 
         public interface HotelDataCallBackFunction{
         public void getHotelDataList(List<MyHotelInfoBean> dataList);
-
+        public void catchError(String message);
 
     }
         public HotelDataProcessor(Activity _activity)
@@ -125,6 +125,9 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
 //                                    .show();
 //                        }
 //                    });
+                    if (progressDialog_waitforJsonParser.isShowing())
+                        progressDialog_waitforJsonParser.dismiss();
+                    mHotelDataCallBackFunction.catchError("Json parsing error: " + e.getMessage());
 
                 }
             } else {
@@ -138,6 +141,9 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
 //                                .show();
 //                    }
 //                });
+                if (progressDialog_waitforJsonParser.isShowing())
+                    progressDialog_waitforJsonParser.dismiss();
+                mHotelDataCallBackFunction.catchError("Couldn't get json from server");
 
             }
 
