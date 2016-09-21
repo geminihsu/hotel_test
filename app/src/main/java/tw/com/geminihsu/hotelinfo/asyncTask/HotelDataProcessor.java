@@ -12,20 +12,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
+//import tw.com.geminihsu.hotelinfo.dataManager.HotelDataManger.HotelDataCallBackFunction;
+
 /**
  * Created by geminihsu on 16/9/20.
  */
-public class HotelDataProcessor extends AsyncTask<String, Void, Void> {
+public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfoBean>> {
         private static final String TAG = HttpHandler.class.getSimpleName();
-        private List<HashMap<String, String>> hotelDataList=new ArrayList <HashMap<String, String>>();
+        private List<MyHotelInfoBean> hotelDataList=new ArrayList <MyHotelInfoBean>();
         private Activity mActivity;
         private ProgressDialog progressDialog_waitforJsonParser;
         private String url;
 
-        public HotelDataProcessor(Activity _activity, String _url)
+         //callback fucntion
+        private HotelDataCallBackFunction mHotelDataCallBackFunction;
+
+        public void setHotelDataCallBackFunction(HotelDataCallBackFunction hotelDataCallBackFunction)
+        {
+             mHotelDataCallBackFunction = hotelDataCallBackFunction;
+        }
+
+        public interface HotelDataCallBackFunction{
+        public void getHotelDataList(List<MyHotelInfoBean> dataList);
+
+
+    }
+        public HotelDataProcessor(Activity _activity)
         {
             mActivity=_activity;
-            //url=_url;
+            //mHotelDataCallBackFunction=hotelDataCallBackFunction;
         }
         @Override
         protected void onPreExecute() {
@@ -39,7 +55,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, Void> {
         }
 
         @Override
-        protected Void doInBackground(String... arg0) {
+        protected List<MyHotelInfoBean> doInBackground(String... arg0) {
             url= arg0[0];
             HttpHandler sh = new HttpHandler();
 
@@ -56,13 +72,15 @@ public class HotelDataProcessor extends AsyncTask<String, Void, Void> {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
+                    //JSONObject total = jsonObj.getJSONObject("totalHotelCount");
+                    String totalNum = jsonObj.getString("totalHotelCount");
+                    Log.e(TAG,"total:"+totalNum);
                     // Getting JSON Array node
-                    JSONArray contacts = jsonObj.getJSONArray("hotelList");
+                    JSONArray datalist = jsonObj.getJSONArray("hotelList");
 
                     // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                    for (int i = 0; i < 10; i++) {
+                        JSONObject c = datalist.getJSONObject(i);
 
                         String sortIndex = c.getString("sortIndex");
                         String hotelId = c.getString("hotelId");
@@ -83,16 +101,17 @@ public class HotelDataProcessor extends AsyncTask<String, Void, Void> {
 
 
                         // tmp hash map for single contact
-                        HashMap<String, String> hotelData = new HashMap<>();
+                        MyHotelInfoBean myHotelInfoBean=new MyHotelInfoBean();
 
-                        // adding each child node to HashMap key => value
-                        hotelData.put("id", id);
-                        contact.put("name", name);
-                        contact.put("email", email);
-                        contact.put("mobile", mobile);
+                        myHotelInfoBean.setHotelId(hotelId);
+                        myHotelInfoBean.setSortIndex(sortIndex);
+                        myHotelInfoBean.setHotelName(name);
+                        myHotelInfoBean.setHotelAddress(address);
+                        //myHotelInfoBean.setHotelId(hotelId);
 
-                        // adding contact to contact list
-                        hotelDataList.add(contact);
+
+
+                        hotelDataList.add(myHotelInfoBean);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -125,14 +144,28 @@ public class HotelDataProcessor extends AsyncTask<String, Void, Void> {
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(List<MyHotelInfoBean> result) {
+           // super.onPostExecute(result);
             // Dismiss the progress dialog
             if (progressDialog_waitforJsonParser.isShowing())
                 progressDialog_waitforJsonParser.dismiss();
+            mHotelDataCallBackFunction.getHotelDataList(hotelDataList);
+            super.onPostExecute(hotelDataList);
 
         }
 
+//    //callback fucntion
+//    private HotelDataCallBackFunction mHotelDataCallBackFunction;
+//
+//    public void setHotelDataCallBackFunction(HotelDataCallBackFunction hotelDataCallBackFunction)
+//    {
+//        mHotelDataCallBackFunction = hotelDataCallBackFunction;
+//    }
+//
+//    public interface HotelDataCallBackFunction{
+//        public void getHotelDataList(List<MyHotelInfoBean> dataList);
 
+
+//    }
 
 }
