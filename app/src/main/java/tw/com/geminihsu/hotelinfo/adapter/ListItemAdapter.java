@@ -3,38 +3,28 @@ package tw.com.geminihsu.hotelinfo.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.app.AlertDialog;
-import android.app.Dialog;
+
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+
 import android.widget.TextView;
 
 import tw.com.geminihsu.hotelinfo.R;
-import tw.com.geminihsu.hotelinfo.adapter.ListItem;
+import tw.com.geminihsu.hotelinfo.utils.ImageUtils;
+
 
 public class ListItemAdapter extends ArrayAdapter<ListItem> {
 
     private LayoutInflater mInflater;
     private Context context;
+	private ImageUtils imageUtils;
     public ListItemAdapter(Context _context,
                            int rid, List<ListItem> list) {
         super(_context, rid, list);
@@ -42,6 +32,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
         mInflater = (LayoutInflater)_context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         context=_context;
+		imageUtils=new ImageUtils(_context);
        
     }
    
@@ -58,7 +49,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			convertView = mInflater.inflate(R.layout.activity_hotelinfo_list_item, null);
 			// set picture
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
-			holder.image.setImageBitmap(item.image);
+			//holder.image.setImageBitmap(item.image);
+			imageUtils.DisplayImage(item.image_url, holder.image);
 
 			// set hotel name
 			holder.name = (TextView)convertView.findViewById(R.id.name);
@@ -76,6 +68,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 			holder.image.setImageBitmap(item.image);
 			holder.name.setText(item.name);
 			holder.address.setText(item.address);
+			imageUtils.DisplayImage(item.image_url, holder.image);
+
 
 		}
 

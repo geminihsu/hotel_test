@@ -96,6 +96,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         String countryCode = c.getString("countryCode");
                         String postalCode = c.getString("postalCode");
                         String airportCode = c.getString("airportCode");
+                        String imageURL = c.getString("thumbnailUrl");
 
                         //shortDescription
                         String shortDescription = c.getString("shortDescription");
@@ -107,7 +108,8 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         myHotelInfoBean.setHotelId(hotelId);
                         myHotelInfoBean.setSortIndex(sortIndex);
                         myHotelInfoBean.setHotelName(name);
-                        myHotelInfoBean.setHotelAddress(address+","+city+","+stateProvinceCode+" "+postalCode);
+                        myHotelInfoBean.setHotelAddress(address+", "+city+", "+stateProvinceCode+" "+postalCode);
+                        myHotelInfoBean.setImageLink(imageURL);
                         //myHotelInfoBean.setHotelId(hotelId);
 
 

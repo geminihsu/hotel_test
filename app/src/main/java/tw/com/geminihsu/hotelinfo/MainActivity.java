@@ -85,6 +85,7 @@ public class MainActivity extends Activity {
             item.image = bm1;
             item.name=data.getHotelName();
             item.address=data.getHotelAddress();
+            item.image_url=Constants.image_data_url+data.getImageLink();
             mHotelListData.add(item);
         }
     }
