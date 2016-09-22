@@ -1,23 +1,23 @@
 package tw.com.geminihsu.hotelinfo.asyncTask;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.app.Activity;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
 
 /**
  * Created by geminihsu on 16/9/20.
  */
-public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfoBean>> {
+public class HotelSingleDataProcessor extends AsyncTask<String, Void, List<MyHotelInfoBean>> {
         private static final String TAG = HttpHandler.class.getSimpleName();
         private List<MyHotelInfoBean> hotelDataList=new ArrayList <MyHotelInfoBean>();
         private Activity mActivity;
@@ -37,7 +37,7 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
         public void catchError(String message);
 
     }
-        public HotelDataProcessor(Activity _activity)
+        public HotelSingleDataProcessor(Activity _activity)
         {
             mActivity=_activity;
             //mHotelDataCallBackFunction=hotelDataCallBackFunction;

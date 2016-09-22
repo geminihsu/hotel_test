@@ -1,7 +1,6 @@
 package tw.com.geminihsu.hotelinfo.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by geminihsu on 16/9/21.
@@ -15,13 +14,13 @@ public class MyHotelInfoBean implements Cloneable ,Serializable {
     private Integer imageEvent;
     private String imageLink;
 
-    private String HotelId;
+    private String hotelId;
     private String sortIndex;
-    private String HotelName;
+    private String hotelName;
 
     private String localizedName;
     private String nonLocalizedName;
-    private String HotelAddress;
+    private String hotelAddress;
 
     private String city;
     private String stateProvinceCode;
@@ -56,27 +55,27 @@ public class MyHotelInfoBean implements Cloneable ,Serializable {
     }
 
     public String getHotelName() {
-        return HotelName;
+        return hotelName;
     }
 
     public void setHotelName(String hotelName) {
-        HotelName = hotelName;
+        this.hotelName = hotelName;
     }
 
     public String getHotelAddress() {
-        return HotelAddress;
+        return hotelAddress;
     }
 
     public void setHotelAddress(String hotelAddress) {
-        HotelAddress = hotelAddress;
+        this.hotelAddress = hotelAddress;
     }
 
     public String getHotelId() {
-        return HotelId;
+        return hotelId;
     }
 
     public void setHotelId(String hotelId) {
-        HotelId = hotelId;
+        this.hotelId = hotelId;
     }
 
     public String getSortIndex() {

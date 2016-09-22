@@ -3,6 +3,7 @@ package tw.com.geminihsu.hotelinfo;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import tw.com.geminihsu.hotelinfo.adapter.ListItemAdapter;
 import tw.com.geminihsu.hotelinfo.adapter.ListItem;
@@ -25,15 +26,13 @@ public class MainActivity extends Activity {
     private ListView listView;
     private final List<ListItem> mHotelListData = new ArrayList<ListItem>();
     private HotelDataProcessor hotelDataProcessor;
-    private HotelDataProcessor mHotelDataManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        }
+        getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+    }
 
     private void findViews() {
         listView = (ListView) findViewById(R.id.listView1);
@@ -60,7 +59,7 @@ public class MainActivity extends Activity {
                     showError(message);
                 }
             });
-            hotelDataProcessor.execute(Constants.data_url);
+            hotelDataProcessor.execute(Constants.hotel_data_url);
         }
         //getDataFromJson();
         // 建立ListItemAdapter
