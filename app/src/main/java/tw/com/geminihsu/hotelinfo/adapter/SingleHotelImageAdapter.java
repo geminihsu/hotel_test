@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tw.com.geminihsu.hotelinfo.R;
+import tw.com.geminihsu.hotelinfo.bean.SingleHotelImageList;
+import tw.com.geminihsu.hotelinfo.common.Constants;
 import tw.com.geminihsu.hotelinfo.utils.ImageUtils;
 
 
@@ -23,23 +25,20 @@ public class SingleHotelImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context context;
 	private ImageUtils imageUtils;
-	private ArrayList<String> image_url;
+	private String[] image_url;
 	private int mPaddingInPixels;
 
 
-    public SingleHotelImageAdapter(Context _context, ArrayList<String> url) {
+    public SingleHotelImageAdapter(Context _context, String[] url) {
 
 
-        mInflater = (LayoutInflater)_context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         context=_context;
 		imageUtils=new ImageUtils(_context);
 		image_url=url;
     }
 
-	@Override
 	public int getCount() {
-		return image_url.size();
+		return image_url.length;
 	}
 
 	public Object getItem(int position) {
@@ -50,28 +49,15 @@ public class SingleHotelImageAdapter extends BaseAdapter {
 		return position;
 	}
 
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ImageView imgView = new ImageView(context);
 
-	public View getView(int position,
-						View convertView, ViewGroup parent) {
+		imgView.setLayoutParams(new Gallery.LayoutParams(500, 500));
+		imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		imageUtils.DisplayImage(image_url[position], imgView);
+		return imgView;
+	}
 
-
-		ImageView imageView = new ImageView(context);
-		// 設定圖片來源
-		//imageView.setImageBitmap(bitmapList.get(index));
-		imageUtils.DisplayImage(image_url.get(position), imageView);
-		// 設定圖片與圖片之間的間距
-		final float scale = context.getResources().getDisplayMetrics().density;
-		mPaddingInPixels = (int) (10 * scale + 0.5f);
-		mPaddingInPixels = mPaddingInPixels + 5;
-		imageView.setPadding(mPaddingInPixels, mPaddingInPixels, mPaddingInPixels, mPaddingInPixels);
-
-		return imageView;
-
-
-    }
-
-
-    
 
 	
 

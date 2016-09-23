@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">HotelInfo</string>
-    <string name="main_page">Host List Infomation</string>
-    <string name="hotel_name">Host Name</string>
-    <string name="hotel_address">Host Address</string>
+    <string name="main_page">Hotel List Infomation</string>
+    <string name="hotel_name">Hotel Name</string>
+    <string name="hotel_address">Hotel Address</string>
     <string name="hotel_loation">Location</string>
     <string name="hotel_description">Hotel Description</string>
+    <string name="hotel_loation_map">Click icon find location on Google Map</string>
     <string name="title_activity_maps">Map</string>
 </resources>

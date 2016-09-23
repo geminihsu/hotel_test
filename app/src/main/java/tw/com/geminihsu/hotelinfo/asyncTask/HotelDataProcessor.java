@@ -94,10 +94,10 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         String countryCode = c.getString("countryCode");
                         String postalCode = c.getString("postalCode");
                         String airportCode = c.getString("airportCode");
-                        String imageURL = c.getString("thumbnailUrl");
-
-                        //shortDescription
                         String shortDescription = c.getString("shortDescription");
+                        String imageURL = c.getString("thumbnailUrl");
+                        String largeThumbnailUrl = c.getString("largeThumbnailUrl");
+
 
 
                         // tmp hash map for single contact
@@ -109,6 +109,8 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         myHotelInfoBean.setHotelAddress(address+", "+city+", "+stateProvinceCode);
                         myHotelInfoBean.setPostalCode(postalCode);
                         myHotelInfoBean.setImageLink(imageURL);
+                        myHotelInfoBean.setLargeThumbnailUrl(largeThumbnailUrl);
+                        myHotelInfoBean.setShortDescription(shortDescription);
                         //myHotelInfoBean.setHotelId(hotelId);
 
 

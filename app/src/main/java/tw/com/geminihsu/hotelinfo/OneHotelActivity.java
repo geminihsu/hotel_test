@@ -34,6 +34,7 @@ import tw.com.geminihsu.hotelinfo.asyncTask.HotelSingleDataProcessor;
 import tw.com.geminihsu.hotelinfo.asyncTask.HotelSingleDataProcessor.SingleHotelDataCallBackFunction;
 import tw.com.geminihsu.hotelinfo.asyncTask.LoadImage;
 import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
+import tw.com.geminihsu.hotelinfo.bean.SingleHotelImageList;
 import tw.com.geminihsu.hotelinfo.bean.SingleHotelInfoBean;
 import tw.com.geminihsu.hotelinfo.common.Constants;
 import tw.com.geminihsu.hotelinfo.MapsActivity;
@@ -51,6 +52,7 @@ public class OneHotelActivity extends Activity {
 	private TextView txt_hotelName;
 	private TextView txt_hotelAddress;
 	private TextView txt_hotelDescription;
+	private TextView txt_hotelShortDescription;
 	private TextView txt_hotelPhoneNumber;
 
 	private RatingBar ratingBar_score;
@@ -71,7 +73,7 @@ public class OneHotelActivity extends Activity {
 		myHotelInfoBean = (MyHotelInfoBean) bundle.getSerializable(Constants.hotelId);
 		Log.e(TAG,"hotelId:"+myHotelInfoBean.getHotelId());
         hotelId=myHotelInfoBean.getHotelId();
-		getActionBar().setTitle(myHotelInfoBean.getHotelName()+" Hotel Information");
+		getActionBar().setTitle(myHotelInfoBean.getHotelName());
 
 	}
 
@@ -80,6 +82,7 @@ public class OneHotelActivity extends Activity {
 		txt_hotelAddress= (TextView) findViewById(R.id.infocomment);
 		txt_hotelDescription = (TextView) findViewById(R.id.comment);
 		txt_hotelPhoneNumber = (TextView) findViewById(R.id.phonenumber);
+		txt_hotelShortDescription= (TextView) findViewById(R.id.shortdescription);
 		ratingBar_score = (RatingBar) findViewById(R.id.rating);
 
 		location_map = (Button) findViewById(R.id.btn_map);
@@ -88,7 +91,6 @@ public class OneHotelActivity extends Activity {
 
 		gallery = (Gallery) findViewById(R.id.gallery1);
 		gallery.setSpacing(1);
-		//gallery.setAdapter(new SingleHotelImageAdapter(OneHotelActivity.this));
 
 	}
 
@@ -123,10 +125,19 @@ public class OneHotelActivity extends Activity {
 					singleHotelInfoBean=hotel_data.clone();
 					txt_hotelName.setText(hotel_data.getHotelName());
 					txt_hotelAddress.setText(hotel_data.getHotelAddress()+" "+myHotelInfoBean.getPostalCode());
+					//txt_hotelShortDescription.setText(myHotelInfoBean.getShortDescription());
 					String description = Html.fromHtml(hotel_data.getLongDescription()).toString();
+					txt_hotelDescription.setText(myHotelInfoBean.getShortDescription());
 					//txt_hotelDescription.setText(description);
 					txt_hotelPhoneNumber.setText(hotel_data.getTelesalesNumber());
 					ratingBar_score.setRating(Float.parseFloat(hotel_data.getRating()));
+					String[] image_url_array = new String[hotel_data.getHotelImageLists().size()];
+					for(int i=0; i<hotel_data.getHotelImageLists().size();i++)
+					{
+						SingleHotelImageList singleHotelImageList = hotel_data.getHotelImageLists().get(i);
+						image_url_array[i] = Constants.image_data_url+singleHotelImageList.getUrl();
+					}
+					gallery.setAdapter(new SingleHotelImageAdapter(OneHotelActivity.this,image_url_array));
 
 					//Log.e(TAG, description);
 				}
@@ -154,7 +165,7 @@ public class OneHotelActivity extends Activity {
 
 				}
 			});
-			displayImage.execute("http://images.travelnow.com/hotels/1000000/60000/51000/50947/50947_302_z.jpg");
+			displayImage.execute(Constants.image_data_url+myHotelInfoBean.getLargeThumbnailUrl());
 		}
 	}
 	@Override

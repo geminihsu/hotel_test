@@ -1,5 +1,6 @@
 package tw.com.geminihsu.hotelinfo;
 
+import android.app.ActionBar;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -49,6 +50,8 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -69,14 +72,28 @@ public class MapsActivity extends FragmentActivity implements
         latitude = Double.valueOf(location_latitude);
 
         //Initializing views and adding onclick listeners
-        buttonSave = (ImageButton) findViewById(R.id.buttonSave);
-        buttonCurrent = (ImageButton) findViewById(R.id.buttonCurrent);
-        buttonView = (ImageButton) findViewById(R.id.buttonView);
-        buttonSave.setOnClickListener(this);
-        buttonCurrent.setOnClickListener(this);
-        buttonView.setOnClickListener(this);
+        //buttonSave = (ImageButton) findViewById(R.id.buttonSave);
+        //buttonCurrent = (ImageButton) findViewById(R.id.buttonCurrent);
+        //buttonView = (ImageButton) findViewById(R.id.buttonView);
+        //buttonSave.setOnClickListener(this);
+        //buttonCurrent.setOnClickListener(this);
+        //buttonView.setOnClickListener(this);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        //buttonCurrent.performClick();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Log.e(TAG, "bbb_onPause");
     }
 
     @Override
@@ -93,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements
 
     //Getting current location
     private void getCurrentLocation() {
-        mMap.clear();
+        //mMap.clear();
         //Creating a location object
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (location != null) {
@@ -133,11 +150,12 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLng = new LatLng(-34, 151);
+        LatLng latLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(latLng).draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.setOnMarkerDragListener(this);
         mMap.setOnMapLongClickListener(this);
+        //buttonCurrent.performClick();
     }
 
     @Override
@@ -164,6 +182,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .draggable(true));
+
     }
 
     @Override
@@ -184,6 +203,8 @@ public class MapsActivity extends FragmentActivity implements
 
         //Moving the map
         moveMap();
+
+        //buttonCurrent.performClick();
     }
 
     @Override

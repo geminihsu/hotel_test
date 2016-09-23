@@ -13,6 +13,7 @@ public class MyHotelInfoBean implements Cloneable ,Serializable {
 
     private Integer imageEvent;
     private String imageLink;
+    private String largeThumbnailUrl;
 
     private String hotelId;
     private String sortIndex;
@@ -27,6 +28,8 @@ public class MyHotelInfoBean implements Cloneable ,Serializable {
     private String countryCode;
     private String postalCode;
     private String shortDescription;
+
+
     public MyHotelInfoBean clone()  {
         try {
             return (MyHotelInfoBean) super.clone();
@@ -142,6 +145,11 @@ public class MyHotelInfoBean implements Cloneable ,Serializable {
         this.shortDescription = shortDescription;
     }
 
+    public String getLargeThumbnailUrl() {
+        return largeThumbnailUrl;
+    }
 
-
+    public void setLargeThumbnailUrl(String largeThumbnailUrl) {
+        this.largeThumbnailUrl = largeThumbnailUrl;
+    }
 }
