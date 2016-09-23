@@ -106,7 +106,8 @@ public class HotelDataProcessor extends AsyncTask<String, Void, List<MyHotelInfo
                         myHotelInfoBean.setHotelId(hotelId);
                         myHotelInfoBean.setSortIndex(sortIndex);
                         myHotelInfoBean.setHotelName(name);
-                        myHotelInfoBean.setHotelAddress(address+", "+city+", "+stateProvinceCode+" "+postalCode);
+                        myHotelInfoBean.setHotelAddress(address+", "+city+", "+stateProvinceCode);
+                        myHotelInfoBean.setPostalCode(postalCode);
                         myHotelInfoBean.setImageLink(imageURL);
                         //myHotelInfoBean.setHotelId(hotelId);
 

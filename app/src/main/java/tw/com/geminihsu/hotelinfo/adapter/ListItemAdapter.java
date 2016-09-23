@@ -1,6 +1,5 @@
 package tw.com.geminihsu.hotelinfo.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,7 +45,7 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			//generated layout view
-			convertView = mInflater.inflate(R.layout.activity_hotelinfo_list_item, null);
+			convertView = mInflater.inflate(R.layout.hotelinfo_list_item, null);
 			// set picture
 			holder.image = (ImageView)convertView.findViewById(R.id.image);
 			//holder.image.setImageBitmap(item.image);

@@ -3,6 +3,7 @@ package tw.com.geminihsu.hotelinfo;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import tw.com.geminihsu.hotelinfo.adapter.ListItemAdapter;
@@ -15,6 +16,8 @@ import tw.com.geminihsu.hotelinfo.asyncTask.HotelDataProcessor.HotelDataCallBack
 
 
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,8 +25,9 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
-    private ListItemAdapter listViewAdapter;
-    private ListView listView;
+    private ListItemAdapter hotellistViewAdapter;
+    private ListView hotellistView;
+    private ArrayList hotelDataList;
     private final List<ListItem> mHotelListData = new ArrayList<ListItem>();
     private HotelDataProcessor hotelDataProcessor;
 
@@ -35,13 +39,32 @@ public class MainActivity extends Activity {
     }
 
     private void findViews() {
-        listView = (ListView) findViewById(R.id.listView1);
+        hotellistView = (ListView) findViewById(R.id.listView1);
     }
+
+    private void setListeners() {
+
+        hotellistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+
+                Intent i = new Intent();
+                i.setClass(MainActivity.this, OneHotelActivity.class);
+
+                Bundle b = new Bundle();
+                b.putSerializable(Constants.hotelId, mHotelListData.get(position).myHotelInfoBean);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
+
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         this.findViews();
+        this.setListeners();
         if(hotelDataProcessor==null) {
             hotelDataProcessor = new HotelDataProcessor(MainActivity.this);
             hotelDataProcessor.setHotelDataCallBackFunction(new HotelDataCallBackFunction() {
@@ -51,7 +74,7 @@ public class MainActivity extends Activity {
                     //listView.setAdapter(listViewAdapter);
                     mHotelListData.clear();
                     getDataFromJsonData((ArrayList)dataList);
-                    listViewAdapter.notifyDataSetChanged();
+                    hotellistViewAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -63,8 +86,10 @@ public class MainActivity extends Activity {
         }
         //getDataFromJson();
         // 建立ListItemAdapter
-        listViewAdapter = new ListItemAdapter(this, 0, mHotelListData);
-        listView.setAdapter(listViewAdapter);
+        if(hotellistViewAdapter==null)
+           hotellistViewAdapter = new ListItemAdapter(this, 0, mHotelListData);
+
+        hotellistView.setAdapter(hotellistViewAdapter);
     }
 
     @Override
@@ -81,6 +106,7 @@ public class MainActivity extends Activity {
             Bitmap bm1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_camera_72x72);
             MyHotelInfoBean data=datalist.get(i);
             ListItem item = new ListItem();
+            item.myHotelInfoBean=data;
             item.image = bm1;
             item.name=data.getHotelName();
             item.address=data.getHotelAddress();

@@ -4,53 +4,95 @@ package tw.com.geminihsu.hotelinfo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import tw.com.geminihsu.hotelinfo.adapter.ListItem;
 import tw.com.geminihsu.hotelinfo.asyncTask.HotelDataProcessor;
+import tw.com.geminihsu.hotelinfo.asyncTask.HotelSingleDataProcessor;
+import tw.com.geminihsu.hotelinfo.asyncTask.HotelSingleDataProcessor.SingleHotelDataCallBackFunction;
 import tw.com.geminihsu.hotelinfo.bean.MyHotelInfoBean;
+import tw.com.geminihsu.hotelinfo.bean.SingleHotelInfoBean;
 import tw.com.geminihsu.hotelinfo.common.Constants;
 
 public class OneHotelActivity extends Activity {
 	 // The helper object
 
-	private HotelDataProcessor hotelDataProcessor;
+	private HotelSingleDataProcessor hotelSingleDataProcessor;
 	private String hotelId;
+	private MyHotelInfoBean myHotelInfoBean;
+
+	private TextView txt_hotelName;
+	private TextView txt_hotelAddress;
+	private TextView txt_hotelDescription;
+	private TextView txt_hotelPhoneNumber;
+
+	private RatingBar ratingBar_score;
 
 	private final static String TAG=OneHotelActivity.class.getSimpleName();
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.one_hote_info_activity);
+		getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 
-		
 
-
+		Bundle bundle = this.getIntent().getExtras();
+		myHotelInfoBean = (MyHotelInfoBean) bundle.getSerializable(Constants.hotelId);
+		Log.e(TAG,"hotelId:"+myHotelInfoBean.getHotelId());
+        hotelId=myHotelInfoBean.getHotelId();
+		getActionBar().setTitle(myHotelInfoBean.getHotelName()+" Hotel Information");
 
 	}
+
+	private void findViews() {
+		txt_hotelName = (TextView) findViewById(R.id.txt_title);
+		txt_hotelAddress= (TextView) findViewById(R.id.infocomment);
+		txt_hotelDescription = (TextView) findViewById(R.id.comment);
+		txt_hotelPhoneNumber = (TextView) findViewById(R.id.phonenumber);
+		ratingBar_score = (RatingBar) findViewById(R.id.rating);
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
+        this.findViews();
+		if(hotelSingleDataProcessor==null) {
+			hotelSingleDataProcessor = new HotelSingleDataProcessor(OneHotelActivity.this);
+			hotelSingleDataProcessor.setSingleHotelDataCallBackFunction(new SingleHotelDataCallBackFunction(){
 
-		if(hotelDataProcessor==null) {
-			hotelDataProcessor = new HotelDataProcessor(OneHotelActivity.this);
-			hotelDataProcessor.setHotelDataCallBackFunction(new HotelDataProcessor.HotelDataCallBackFunction() {
 				@Override
-				public void getHotelDataList(List<MyHotelInfoBean> dataList) {
-
+				public void getSingleHotelDataList(SingleHotelInfoBean hotel_data) {
+					//getDataFromJsonData(hotel_data);
+					txt_hotelName.setText(hotel_data.getHotelName());
+					txt_hotelAddress.setText(hotel_data.getHotelAddress()+" "+myHotelInfoBean.getPostalCode());
+					String description = Html.fromHtml(hotel_data.getLongDescription()).toString();
+					txt_hotelDescription.setText(description);
+					txt_hotelPhoneNumber.setText(hotel_data.getTelesalesNumber());
+					ratingBar_score.setRating(Float.parseFloat(hotel_data.getRating()));
+				    //Log.e(TAG, description);
 				}
 
 				@Override
 				public void catchError(String message) {
-					showError(message);
+
 				}
 			});
-			hotelDataProcessor.execute(Constants.hotel_domain_name+"hotelId="+hotelId+"&apikey="+Constants.hotel_query_apikey);
+			hotelSingleDataProcessor.execute(Constants.hotel_domain_name+"hotelId="+hotelId+"&apikey="+Constants.hotel_query_apikey);
 		}
 	}
 	@Override
@@ -60,59 +102,6 @@ public class OneHotelActivity extends Activity {
 		return true;
 	}
 
-	private Handler myHandler = new Handler() {
-		// @Override
-		public void handleMessage(Message msg) {
-			/* 當取得識別為 持續在執行緒當中時所取得的訊息 */
-			if (!Thread.currentThread().isInterrupted()) {
-
-				switch (msg.what) {
-				case 1: // get live view image
-				{
-					//下面註解的部分是讓使用者可以存取AP 300次寫入和讀取檔案
-					/*File limitCountfolder=new File(Environment.getExternalStorageDirectory() + Constants.SDACRD_DIR_APP_ROOT);
-					if(!limitCountfolder.exists())
-						limitCountfolder.mkdirs();
-					//讀取記錄檔得知使用者使用AP幾次
-					File limitCount=new File(Environment.getExternalStorageDirectory() + Constants.SDACRD_DIR_APP_ROOT + Constants.SDACRD_DIR_APP_ROOT_LIMITCOUNT_FILE);
-					if(!limitCount.exists()){
-						//若沒有此紀錄檔建立新的file
-						try {
-							
-							limitCount.createNewFile();
-							LimitOverUtil.writeLimitCount(limitCount,String.valueOf(Constants.LIMIT_OVER_COUNT));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
-					}else{
-						//若有此紀錄檔則更新數值
-						String old_count=LimitOverUtil.readLimitCount(limitCount);
-						int count = Integer.valueOf(old_count);
-						if (count > 0)//若不等於零則次數減一
-							count--;
-						else
-							count = 0;	
-						LimitOverUtil.writeLimitCount(limitCount,String.valueOf(count));
-					}*/
-					Intent intent = new Intent();
-					intent.setClass(OneHotelActivity.this, MainActivity.class);
-					startActivity(intent);
-					OneHotelActivity.this.finish();
-
-					break;
-				}
-				case 2: // login Page
-				{
-					
-									break;
-				}
-				}
-			}
-			super.handleMessage(msg);
-		}
-	};
 
 	public void showError(String _message)
 	{
@@ -127,5 +116,15 @@ public class OneHotelActivity extends Activity {
 
 	}
 
-	
+	private void getDataFromJsonData(SingleHotelInfoBean data) {
+
+			// for listview data
+			Bitmap bm1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_camera_72x72);
+
+			ListItem item = new ListItem();
+			item.image = bm1;
+			item.name=data.getHotelName();
+			item.address=data.getHotelAddress();
+			item.image_url=Constants.image_data_url+data.getImageLink();
+	}
 }
