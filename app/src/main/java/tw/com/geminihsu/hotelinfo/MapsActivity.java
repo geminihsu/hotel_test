@@ -141,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
         //Animating the camera
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
         //Displaying current coordinates in toast
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
