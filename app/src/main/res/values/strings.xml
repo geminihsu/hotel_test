@@ -5,4 +5,5 @@
     <string name="hotel_address">Host Address</string>
     <string name="hotel_loation">Location</string>
     <string name="hotel_description">Hotel Description</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

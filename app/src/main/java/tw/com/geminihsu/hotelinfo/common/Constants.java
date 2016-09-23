@@ -14,5 +14,8 @@ public class Constants
 
     final public static String hotelId = "hotel_id";
 
+    final public static String hotel_latitude = "latitude";
+    final public static String hotel_longitude = "longitude";
+
 }
 

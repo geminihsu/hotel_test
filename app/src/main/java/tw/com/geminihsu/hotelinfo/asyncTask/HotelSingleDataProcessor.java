@@ -77,25 +77,26 @@ public class HotelSingleDataProcessor extends AsyncTask<String, Void, SingleHote
                     //String totalNum = jsonObj.getString("totalHotelCount");
 
                     // Getting JSON Array node
-//                    JSONArray imagelist = jsonObj.getJSONArray("photos");
-//                    ArrayList<SingleHotelImageList> imageInfoList=new ArrayList<SingleHotelImageList>();
-//
-//                    for (int i = 0; i < imagelist.length(); i++)
-//                    {
-//                        JSONObject imageInfo = imagelist.getJSONObject(i);
-//
-//                        String url=imageInfo.getString("url");
-//                        String thumbnailUrl = imageInfo.getString("thumbnailUrl");
-//                        String featured = imageInfo.getString("featured");
-//                        String displayText = imageInfo.getString("displayText");
-//
-//                        SingleHotelImageList singleHotelImageList = new SingleHotelImageList();
-//                        singleHotelImageList.setUrl(url);
-//                        singleHotelImageList.setThumbnailUrl(thumbnailUrl);
-//                        singleHotelImageList.setFeatured(featured);
-//                        singleHotelImageList.setDisplayText(displayText);
-//
-//                    }
+                    JSONArray imagelist = jsonObj.getJSONArray("photos");
+                    ArrayList<SingleHotelImageList> imageInfoList=new ArrayList<SingleHotelImageList>();
+
+                    for (int i = 0; i < imagelist.length(); i++)
+                    {
+                        JSONObject imageInfo = imagelist.getJSONObject(i);
+
+                        String url=imageInfo.getString("url");
+                        String thumbnailUrl = imageInfo.getString("thumbnailUrl");
+                        String featured = imageInfo.optString("featured");
+                        String displayText = imageInfo.getString("displayText");
+
+                        SingleHotelImageList singleHotelImageList = new SingleHotelImageList();
+                        singleHotelImageList.setUrl(url);
+                        singleHotelImageList.setThumbnailUrl(thumbnailUrl);
+                        singleHotelImageList.setFeatured(featured);
+                        singleHotelImageList.setDisplayText(displayText);
+                        imageInfoList.add(singleHotelImageList);
+
+                    }
                         String hotelId = jsonObj.getString("hotelId");
                         String name = jsonObj.getString("hotelName");
                         String localizedHotelName = jsonObj.getString("localizedHotelName");
@@ -127,7 +128,7 @@ public class HotelSingleDataProcessor extends AsyncTask<String, Void, SingleHote
                         singleHotelInfoBean.setLongDescription(longDescription);
                         singleHotelInfoBean.setTelesalesNumber(telesalesNumber);
                         singleHotelInfoBean.setRating(hotelStarRating);
-                    //singleHotelInfoBean.setHotelImageLists(imageInfoList);
+                        singleHotelInfoBean.setHotelImageLists(imageInfoList);
 
 
 
